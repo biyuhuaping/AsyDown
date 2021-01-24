@@ -8,15 +8,18 @@
 
 #import "RootTableViewCell.h"
 #import "FGGDownloadManager.h"
+
 #define WIDTH [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height
 #define kCachePath (NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0])
+
 @implementation RootTableViewCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
 }
+
 //重写初始化
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -26,6 +29,7 @@
     }
     return self;
 }
+
 - (void)initUI {
     _Tlabel = [[UILabel alloc]init];
     _Dlabel = [[UILabel alloc]init];
@@ -37,6 +41,7 @@
     [self.contentView addSubview:_Xbutton];
     [self.contentView addSubview:_progressView];
 }
+
 - (void)initFrame {
     CGFloat topSpace =10;
     CGFloat leftSpace = 10;
@@ -59,6 +64,7 @@
     _progressView.trackTintColor = [UIColor yellowColor];
     _progressView.progress = 0.0;
 }
+
 //把下载这件事交给model去做，model暴露状态、进度等属性。cell通过KVO监视进度
 - (void)configData:(RootModel *)model{
     _rootModel = model;
@@ -78,29 +84,27 @@
             [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
         }
         else{
-        
             [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
         }
             _Xbutton.tag = 101;
     }else {
          [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
-        
     }
 
     [_Xbutton addTarget:self action:@selector(xubuttonAction:) forControlEvents:UIControlEventTouchUpInside];
 }
+
 //http://files.cnblogs.com/ios8/WeixinDeom.zip 记得把_downlinkStr值传过去要
 //withStr传的是一类图片的id
 - (void)xubuttonAction:(UIButton *)button {
     if (button.tag == 101) {
         if(self.downloadBlock)
             self.downloadBlock(button);
-        
     }else {
         NSLog(@"点击了在线");
     }
-    
 }
+
 - (void)setDataList:(NSArray *)dataList {
     self.progressArray = [NSMutableArray new];
     self.statusArray = [NSMutableArray new];
@@ -151,7 +155,6 @@
                     NSLog(@"错误下载");
                     [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
                     [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusWaiting]];
-    
                 }];
             }
             else if([sender.currentTitle isEqualToString:@"暂停"])
@@ -162,42 +165,33 @@
                 [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusWaiting]];
             }
         };
-    
         return cell;
-
 }
 
 /////////
--(void)setDownloadProgress:(float)progress WithStatus:(DownloadStatus)downloadStatus with:(RootModel *)model{
+- (void)setDownloadProgress:(float)progress WithStatus:(DownloadStatus)downloadStatus with:(RootModel *)model{
     _Tlabel.text = model.name;
     _Dlabel.text = model.abstract;
     if ([model.online isEqualToString:@"0"] ){
         _downloadStatus = downloadStatus;
         if (_downloadStatus == DownloadStatusLoading) {
-
             [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
-            
         }else if(_downloadStatus == DownloadStatusPause) {
-            
             [_Xbutton setTitle:@"暂停" forState:UIControlStateNormal];
-            
         }else if(_downloadStatus == DownloadStatusWaiting) {
-            
             [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
-            
         }else if(_downloadStatus == DownloadStatusComplete){
-            
             [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
         }
         _Xbutton.tag = 101;
     }else {
         [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
-        
     }
     [_Xbutton addTarget:self action:@selector(xubuttonAction:) forControlEvents:UIControlEventTouchUpInside];
     //进度条
     self.progressView.progress = progress / 100;
 }
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     // Configure the view for the selected state

@@ -11,6 +11,7 @@
 @implementation RootModel
 @synthesize progress;
 @synthesize num;
+
 //解析主页数据的feature
 + (NSMutableDictionary *)arrayAPPModelWithResponse:(NSData *)dict{
     NSMutableArray *topArray = [[NSMutableArray alloc]init];
@@ -47,9 +48,9 @@
     [resultDict setValue:topArray forKey:@"top"];
     [resultDict setValue:hotArray forKey:@"hot"];
     [resultDict setValue:newArray forKey:@"new"];
-    
     return resultDict;
 }
+
 + (NSMutableArray *)arrayAppmodelWithResponse:(NSData *)dict {
     NSMutableArray *resultArray = [[NSMutableArray alloc]init];
     NSDictionary *dictt = [NSJSONSerialization JSONObjectWithData:dict options:NSJSONReadingMutableContainers error:nil];
@@ -75,4 +76,5 @@
     }
     return resultArray;
 }
+
 @end

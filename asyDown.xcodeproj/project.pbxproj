@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		103236831E0B6E5E0094F2E1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236821E0B6E5E0094F2E1 /* main.m */; };
 		103236861E0B6E5E0094F2E1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236851E0B6E5E0094F2E1 /* AppDelegate.m */; };
-		103236891E0B6E5E0094F2E1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236881E0B6E5E0094F2E1 /* ViewController.m */; };
-		1032368C1E0B6E5E0094F2E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1032368A1E0B6E5E0094F2E1 /* Main.storyboard */; };
 		1032368E1E0B6E5E0094F2E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1032368D1E0B6E5E0094F2E1 /* Assets.xcassets */; };
 		103236911E0B6E5E0094F2E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1032368F1E0B6E5E0094F2E1 /* LaunchScreen.storyboard */; };
 		1032369C1E0B6E5F0094F2E1 /* asyDownTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1032369B1E0B6E5F0094F2E1 /* asyDownTests.m */; };
@@ -39,7 +37,6 @@
 		103237001E0B6F4B0094F2E1 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236ED1E0B6F4B0094F2E1 /* UIProgressView+AFNetworking.m */; };
 		103237011E0B6F4B0094F2E1 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236EF1E0B6F4B0094F2E1 /* UIRefreshControl+AFNetworking.m */; };
 		103237021E0B6F4B0094F2E1 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 103236F11E0B6F4B0094F2E1 /* UIWebView+AFNetworking.m */; };
-		10A5BC111E0D12DD00F1053B /* DownloadProgressTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 10A5BC101E0D12DD00F1053B /* DownloadProgressTableDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,9 +61,6 @@
 		103236821E0B6E5E0094F2E1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		103236841E0B6E5E0094F2E1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		103236851E0B6E5E0094F2E1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		103236871E0B6E5E0094F2E1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		103236881E0B6E5E0094F2E1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		1032368B1E0B6E5E0094F2E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1032368D1E0B6E5E0094F2E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		103236901E0B6E5E0094F2E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		103236921E0B6E5E0094F2E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -123,8 +117,6 @@
 		103236EF1E0B6F4B0094F2E1 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		103236F01E0B6F4B0094F2E1 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		103236F11E0B6F4B0094F2E1 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
-		10A5BC0F1E0D12DD00F1053B /* DownloadProgressTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadProgressTableDataSource.h; sourceTree = "<group>"; };
-		10A5BC101E0D12DD00F1053B /* DownloadProgressTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadProgressTableDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,17 +167,14 @@
 		103236801E0B6E5E0094F2E1 /* asyDown */ = {
 			isa = PBXGroup;
 			children = (
-				103236CC1E0B6F4B0094F2E1 /* AFNetworking */,
-				103236BB1E0B6F250094F2E1 /* ROOT */,
-				103236B41E0B6E9F0094F2E1 /* FGGDownloader */,
 				103236841E0B6E5E0094F2E1 /* AppDelegate.h */,
 				103236851E0B6E5E0094F2E1 /* AppDelegate.m */,
-				103236871E0B6E5E0094F2E1 /* ViewController.h */,
-				103236881E0B6E5E0094F2E1 /* ViewController.m */,
-				1032368A1E0B6E5E0094F2E1 /* Main.storyboard */,
 				1032368D1E0B6E5E0094F2E1 /* Assets.xcassets */,
 				1032368F1E0B6E5E0094F2E1 /* LaunchScreen.storyboard */,
 				103236921E0B6E5E0094F2E1 /* Info.plist */,
+				103236CC1E0B6F4B0094F2E1 /* AFNetworking */,
+				103236B41E0B6E9F0094F2E1 /* FGGDownloader */,
+				103236BB1E0B6F250094F2E1 /* ViewController */,
 				103236811E0B6E5E0094F2E1 /* Supporting Files */,
 			);
 			path = asyDown;
@@ -228,45 +217,19 @@
 			path = FGGDownloader;
 			sourceTree = "<group>";
 		};
-		103236BB1E0B6F250094F2E1 /* ROOT */ = {
-			isa = PBXGroup;
-			children = (
-				103236BC1E0B6F250094F2E1 /* Controller */,
-				103236C01E0B6F250094F2E1 /* Model */,
-				103236C31E0B6F250094F2E1 /* View */,
-			);
-			path = ROOT;
-			sourceTree = "<group>";
-		};
-		103236BC1E0B6F250094F2E1 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				103236BD1E0B6F250094F2E1 /* PEOViewController.h */,
-				103236BE1E0B6F250094F2E1 /* PEOViewController.m */,
-				103236BF1E0B6F250094F2E1 /* PEOViewController.xib */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		103236C01E0B6F250094F2E1 /* Model */ = {
+		103236BB1E0B6F250094F2E1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				103236C11E0B6F250094F2E1 /* RootModel.h */,
 				103236C21E0B6F250094F2E1 /* RootModel.m */,
-				10A5BC0F1E0D12DD00F1053B /* DownloadProgressTableDataSource.h */,
-				10A5BC101E0D12DD00F1053B /* DownloadProgressTableDataSource.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		103236C31E0B6F250094F2E1 /* View */ = {
-			isa = PBXGroup;
-			children = (
 				103236C41E0B6F250094F2E1 /* RootTableViewCell.h */,
 				103236C51E0B6F250094F2E1 /* RootTableViewCell.m */,
 				103236C61E0B6F250094F2E1 /* RootTableViewCell.xib */,
+				103236BD1E0B6F250094F2E1 /* PEOViewController.h */,
+				103236BE1E0B6F250094F2E1 /* PEOViewController.m */,
+				103236BF1E0B6F250094F2E1 /* PEOViewController.xib */,
 			);
-			path = View;
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		103236CC1E0B6F4B0094F2E1 /* AFNetworking */ = {
@@ -416,6 +379,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -441,7 +405,6 @@
 				103236C81E0B6F250094F2E1 /* PEOViewController.xib in Resources */,
 				1032368E1E0B6E5E0094F2E1 /* Assets.xcassets in Resources */,
 				103236CB1E0B6F250094F2E1 /* RootTableViewCell.xib in Resources */,
-				1032368C1E0B6E5E0094F2E1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,7 +430,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				103237011E0B6F4B0094F2E1 /* UIRefreshControl+AFNetworking.m in Sources */,
-				103236891E0B6E5E0094F2E1 /* ViewController.m in Sources */,
 				103236B91E0B6E9F0094F2E1 /* FGGDownloader.m in Sources */,
 				103237001E0B6F4B0094F2E1 /* UIProgressView+AFNetworking.m in Sources */,
 				103236F31E0B6F4B0094F2E1 /* AFNetworkReachabilityManager.m in Sources */,
@@ -482,7 +444,6 @@
 				103236FA1E0B6F4B0094F2E1 /* AFAutoPurgingImageCache.m in Sources */,
 				103236F21E0B6F4B0094F2E1 /* AFHTTPSessionManager.m in Sources */,
 				103236BA1E0B6E9F0094F2E1 /* FGGDownloadManager.m in Sources */,
-				10A5BC111E0D12DD00F1053B /* DownloadProgressTableDataSource.m in Sources */,
 				103236861E0B6E5E0094F2E1 /* AppDelegate.m in Sources */,
 				103236CA1E0B6F250094F2E1 /* RootTableViewCell.m in Sources */,
 				103236831E0B6E5E0094F2E1 /* main.m in Sources */,
@@ -526,14 +487,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		1032368A1E0B6E5E0094F2E1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1032368B1E0B6E5E0094F2E1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		1032368F1E0B6E5E0094F2E1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
