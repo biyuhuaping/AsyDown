@@ -45,7 +45,7 @@ static FGGDownloadManager * mgr = nil;
 /// 收到系统存储空间不足的通知调用的方法
 /// @param sender 系统存储空间不足的通知
 - (void)systemSpaceInsufficient:(NSNotification *)sender{
-    NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
+    NSString *urlString = [sender.userInfo objectForKey:@"urlString"];
     [[FGGDownloadManager shredManager] cancelDownloadTask:urlString];
 }
 
@@ -99,32 +99,32 @@ static FGGDownloadManager * mgr = nil;
     return mgr;
 }
 
-- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure{
+- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProgressBlock)progressBlock completion:(CompletionHandle)completion failure:(FailureHandle)failure{
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
     if(_taskDict.count >= kFGGDwonloadMaxTaskCount){
         NSDictionary *dict = @{
             @"urlString":urlString,
             @"destinationPath":destinationPath,
-            @"process":process,
+            @"process":progressBlock,
             @"completion":completion,
             @"failure":failure};
         [_queue addObject:dict];
         return;
     }
     
-    FGGDownloader *downloader=[FGGDownloader downloader];
+    FGGDownloader *downloader = [FGGDownloader downloader];
     @synchronized (self) {
         [_taskDict setObject:downloader forKey:urlString];
     }
     
-    [downloader downloadWithUrlString:urlString toPath:destinationPath process:process completion:completion failure:failure];
+    [downloader downloadWithUrlString:urlString toPath:destinationPath process:progressBlock completion:completion failure:failure];
 }
 
 /// 取消下载任务
 /// @param url 下载的链接
 - (void)cancelDownloadTask:(NSString *)url{
-    FGGDownloader *downloader=[_taskDict objectForKey:url];
+    FGGDownloader *downloader = [_taskDict objectForKey:url];
     [downloader cancel];
     @synchronized (self) {
         [_taskDict removeObjectForKey:url];
@@ -148,23 +148,23 @@ static FGGDownloadManager * mgr = nil;
     @synchronized (self) {
         [_taskDict removeObjectForKey:url];
     }
-    NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
-    NSString *totalLebgthKey=[NSString stringWithFormat:@"%@totalLength",url];
-    NSString *progressKey=[NSString stringWithFormat:@"%@progress",url];
+    NSUserDefaults *usd = [NSUserDefaults standardUserDefaults];
+    NSString *totalLebgthKey = [NSString stringWithFormat:@"%@totalLength",url];
+    NSString *progressKey = [NSString stringWithFormat:@"%@progress",url];
     [usd removeObjectForKey:totalLebgthKey];
     [usd removeObjectForKey:progressKey];
     [usd synchronize];
     
-    NSFileManager *fileManager=[NSFileManager defaultManager];
-    BOOL fileExist=[fileManager fileExistsAtPath:path];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL fileExist = [fileManager fileExistsAtPath:path];
     if(fileExist){
         [fileManager removeItemAtPath:path error:nil];
     }
 }
 
--(void)cancelAllTasks{
+- (void)cancelAllTasks{
     [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        FGGDownloader *downloader=obj;
+        FGGDownloader *downloader = obj;
         [downloader cancel];
         [_taskDict removeObjectForKey:key];
     }];

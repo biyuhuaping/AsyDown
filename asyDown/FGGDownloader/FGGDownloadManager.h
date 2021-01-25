@@ -48,7 +48,7 @@
 /// @param process 下载过程中回调的代码块，会多次调用
 /// @param completion 下载完成回调的代码块
 /// @param failure 下载失败的回调代码块
-- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure;
+- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProgressBlock)progressBlock completion:(CompletionHandle)completion failure:(FailureHandle)failure;
 
 /// 暂停下载
 /// @param url 下载的链接

@@ -11,6 +11,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "HSSessionModel.h"
 
 /// 下载完成的通知名
 static NSString *const FGGDownloadTaskDidFinishDownloadingNotification=@"FGGDownloadTaskDidFinishDownloadingNotification";
@@ -23,7 +24,7 @@ static NSString *const FGGProgressDidChangeNotificaiton=@"FGGProgressDidChangeNo
 
 //下载过程中回调的代码块，3个参数分别为：下载进度、已下载部分大小/文件大小构成的字符串(如:1.15M/5.27M)、
 //以及文件下载速度字符串(如:512Kb/s)
-typedef void (^ProcessHandle)(float progress, NSString *sizeString, NSString *speedString);
+typedef void (^ProgressBlock)(float progress, NSString *sizeString, NSString *speedString);
 typedef void (^CompletionHandle)();
 typedef void (^FailureHandle)(NSError *error);
 
@@ -32,7 +33,7 @@ typedef void (^FailureHandle)(NSError *error);
 @interface FGGDownloader : NSObject<NSURLConnectionDataDelegate,NSURLConnectionDelegate>
 
 ///下载过程中回调的代码块，会多次调用。
-@property(nonatomic, copy, readonly) ProcessHandle process;
+@property (copy, nonatomic) ProgressBlock progressBlock;
 
 ///下载完成回调的代码块
 @property(nonatomic, copy, readonly) CompletionHandle completion;
@@ -40,7 +41,6 @@ typedef void (^FailureHandle)(NSError *error);
 ///下载失败的回调代码块
 @property(nonatomic, copy, readonly) FailureHandle failure;
 
-@property(nonatomic, strong) NSURLConnection *con;
 
 /// 获取对象的类方法
 + (instancetype)downloader;
@@ -48,10 +48,13 @@ typedef void (^FailureHandle)(NSError *error);
 /// 断点下载
 /// @param urlString        下载的链接
 /// @param destinationPath  下载的文件的保存路径
-/// @param process         下载过程中回调的代码块，会多次调用
+/// @param progressBlock         下载过程中回调的代码块，会多次调用
 /// @param completion      下载完成回调的代码块
 /// @param failure         下载失败的回调代码块
-- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure;
+- (void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProgressBlock)progressBlock completion:(CompletionHandle)completion failure:(FailureHandle)failure;
+
+/// 开启任务下载资源
+- (void)downloadWithURL:(NSString *)url progress:(ProgressBlock)progressBlock state:(void (^)(DownloadState))stateBlock;
 
 /// 取消下载
 - (void)cancel;

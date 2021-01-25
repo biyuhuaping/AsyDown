@@ -20,6 +20,11 @@
     // Initialization code
 }
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    // Configure the view for the selected state
+}
+
 //重写初始化
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -35,7 +40,7 @@
     _Dlabel = [[UILabel alloc]init];
     _Xbutton = [UIButton buttonWithType:UIButtonTypeSystem];
     _progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
-
+    
     [self.contentView addSubview:_Tlabel];
     [self.contentView addSubview:_Dlabel];
     [self.contentView addSubview:_Xbutton];
@@ -51,11 +56,12 @@
     _Dlabel.frame = CGRectMake(leftSpace, tlableY+3,WIDTH-150-70, 30);
     _Dlabel.textColor = [UIColor grayColor];
     _Dlabel.font = [UIFont systemFontOfSize:14];
-
+    
     _Xbutton.frame = CGRectMake(WIDTH-60, tlableY/2, 50, 33);
     UIImage *buttonImage = [UIImage imageNamed:@"ajm.9.png"];
     [_Xbutton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [_Xbutton setBackgroundColor:[UIColor blueColor]];
+    [_Xbutton setBackgroundColor:UIColor.orangeColor];
+    [_Xbutton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     _Xbutton.layer.masksToBounds = YES;
     _Xbutton.layer.cornerRadius = 8.0;
     
@@ -65,6 +71,7 @@
     _progressView.progress = 0.0;
 }
 
+#pragma mark -
 //把下载这件事交给model去做，model暴露状态、进度等属性。cell通过KVO监视进度
 - (void)configData:(RootModel *)model{
     _rootModel = model;
@@ -74,24 +81,61 @@
         BOOL exist=[[NSFileManager defaultManager] fileExistsAtPath:[kCachePath stringByAppendingPathComponent:model.name]];
         if(exist){
             //获取原来的下载进度
-            _progressView.progress=[[FGGDownloadManager shredManager] lastProgress:model.downlink];
+            _progressView.progress = [[FGGDownloadManager shredManager] lastProgress:model.downlink];
             NSLog(@"进度 %f",_progressView.progress);
         }
-        if(_progressView.progress==1.0){
+        if(_progressView.progress == 1.0){
             [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
-        }
-        else if(_progressView.progress>0.0){
+        } else if(_progressView.progress>0.0){
             [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
-        }
-        else{
+        } else{
             [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
         }
-            _Xbutton.tag = 101;
+        _Xbutton.tag = 101;
     }else {
-         [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
+        [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
     }
-
+    
     [_Xbutton addTarget:self action:@selector(xubuttonAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setModel:(ChapterModel *)model{
+    _model = model;
+    self.Tlabel.text = model.title;
+    self.Dlabel.text = model.type == 1?@"视频":@"音频";
+    
+    BOOL exist = [[NSFileManager defaultManager] fileExistsAtPath:[kCachePath stringByAppendingPathComponent:model.title]];
+    if(exist){
+        //获取原来的下载进度
+        _progressView.progress = [[FGGDownloadManager shredManager] lastProgress:model.url];
+        NSLog(@"进度 %f",_progressView.progress);
+    }
+    if(_progressView.progress == 1.0){
+        [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
+    } else if(_progressView.progress>0.0){
+        [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
+    } else{
+        [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
+    }
+    
+//    CGFloat progress = [[HSDownloadManager sharedInstance] progress:model.url];
+//    DBLog(@"\n===\n%.2f",progress);
+//    if (progress == 0) {//未下载
+//        self.progressLabel.hidden = YES;
+//        [self.downloadBtn setImage:[UIImage imageNamed:@"download"] forState:UIControlStateNormal];
+//    }else if(progress < 1){//下载中
+//        self.progressLabel.hidden = NO;
+//        self.progressLabel.text = [NSString stringWithFormat:@"%.f%%", progress * 100];
+//        if (model.state == DownloadStateStart) {
+//            [self addAnimation];
+//            [self.downloadBtn setImage:[UIImage imageNamed:@"download_loading"] forState:UIControlStateNormal];
+//        }else{
+//            [self.downloadBtn setImage:[UIImage imageNamed:@"download_pending"] forState:UIControlStateNormal];
+//        }
+//    }else{//已下载
+//        self.progressLabel.hidden = YES;
+//        [self.downloadBtn setImage:[UIImage imageNamed:@"download_finished"] forState:UIControlStateNormal];
+//    }
 }
 
 //http://files.cnblogs.com/ios8/WeixinDeom.zip 记得把_downlinkStr值传过去要
@@ -114,87 +158,101 @@
     }
 }
 
-- (RootTableViewCell *)tableView:(UITableView *)tableView
-                   indexPath:(NSIndexPath *)indexPath withArray:(NSMutableArray *)dataSource{
-        static NSString *cellID = @"cellID";
-        RootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if (!cell) {
-            cell = [[RootTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        }
+/*
+- (RootTableViewCell *)tableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath withArray:(NSMutableArray *)dataSource{
+    static NSString *cellID = @"cellID";
+    RootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell = [[RootTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
     NSLog(@"indezx %ld",(long)indexPath.row);
-        RootModel *model = [RootModel new];
-        model = dataSource[indexPath.row];
-        float progressValue = [[self.progressArray objectAtIndex:indexPath.row] floatValue];
-        int downloadStauts = [[self.statusArray objectAtIndex:indexPath.row] intValue];
-        [cell setDownloadProgress:progressValue WithStatus:downloadStauts with:model];
-       // 点击下载按钮时回调的代码块
-        __weak typeof(cell) weakCell=cell;
-        cell.downloadBlock=^(UIButton *sender){
-            NSLog(@"button  %@",sender.currentTitle);
-            if([sender.currentTitle isEqualToString:@"开始"]||[sender.currentTitle isEqualToString:@"恢复"]){
-    
-                [sender setTitle:@"暂停" forState:UIControlStateNormal];
-                //添加下载任务
-                NSLog(@"downlik:%@ name:%@",model.downlink,model.name);
-                [[FGGDownloadManager shredManager] downloadWithUrlString:model.downlink toPath:[kCachePath stringByAppendingPathComponent:model.name] process:^(float progress, NSString *sizeString, NSString *speedString) {
-                    //更新进度条的进度值
-                    weakCell.progressView.progress=progress;
-                    [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:progress]];
-                    [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusPause]];
-                    NSLog(@"进度条%f",progress);
-    
-                } completion:^{
-                    [sender setTitle:@"完成" forState:UIControlStateNormal];
-                    sender.enabled=NO;
-                    [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
-                    [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusComplete]];
-    
-                } failure:^(NSError *error) {
-                    [[FGGDownloadManager shredManager] cancelDownloadTask:model.downlink];
-                    [sender setTitle:@"恢复" forState:UIControlStateNormal];
-                    NSLog(@"错误下载");
-                    [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
-                    [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusWaiting]];
-                }];
-            }
-            else if([sender.currentTitle isEqualToString:@"暂停"])
-            {
-                [sender setTitle:@"恢复" forState:UIControlStateNormal];
+    RootModel *model = [RootModel new];
+    model = dataSource[indexPath.row];
+    float progressValue = [[self.progressArray objectAtIndex:indexPath.row] floatValue];
+    int downloadStauts = [[self.statusArray objectAtIndex:indexPath.row] intValue];
+    [cell setDownloadProgress:progressValue WithStatus:downloadStauts with:model];
+    // 点击下载按钮时回调的代码块
+    __weak typeof(cell) weakCell = cell;
+    cell.downloadBlock = ^(UIButton *sender){
+        NSLog(@"button  %@",sender.currentTitle);
+        if([sender.currentTitle isEqualToString:@"开始"]||[sender.currentTitle isEqualToString:@"恢复"]){
+            
+            [sender setTitle:@"暂停" forState:UIControlStateNormal];
+            //添加下载任务
+            NSLog(@"downlik:%@ name:%@",model.downlink,model.name);
+            [[FGGDownloadManager shredManager] downloadWithUrlString:model.downlink toPath:[kCachePath stringByAppendingPathComponent:model.name] process:^(float progress, NSString *sizeString, NSString *speedString) {
+                //更新进度条的进度值
+                weakCell.progressView.progress=progress;
+                [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:progress]];
+                [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusPause]];
+                NSLog(@"进度条%f",progress);
+                
+            } completion:^{
+                [sender setTitle:@"完成" forState:UIControlStateNormal];
+                sender.enabled=NO;
+                [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
+                [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusComplete]];
+                
+            } failure:^(NSError *error) {
                 [[FGGDownloadManager shredManager] cancelDownloadTask:model.downlink];
+                [sender setTitle:@"恢复" forState:UIControlStateNormal];
+                NSLog(@"错误下载");
                 [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
                 [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusWaiting]];
-            }
-        };
-        return cell;
-}
+            }];
+        }
+        else if([sender.currentTitle isEqualToString:@"暂停"]) {
+            [sender setTitle:@"恢复" forState:UIControlStateNormal];
+            [[FGGDownloadManager shredManager] cancelDownloadTask:model.downlink];
+            [self.progressArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithFloat:0.0]];
+            [self.statusArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:DownloadStatusWaiting]];
+        }
+    };
+    return cell;
+}*/
 
 /////////
-- (void)setDownloadProgress:(float)progress WithStatus:(DownloadStatus)downloadStatus with:(RootModel *)model{
-    _Tlabel.text = model.name;
-    _Dlabel.text = model.abstract;
-    if ([model.online isEqualToString:@"0"] ){
-        _downloadStatus = downloadStatus;
-        if (_downloadStatus == DownloadStatusLoading) {
-            [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
-        }else if(_downloadStatus == DownloadStatusPause) {
-            [_Xbutton setTitle:@"暂停" forState:UIControlStateNormal];
-        }else if(_downloadStatus == DownloadStatusWaiting) {
-            [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
-        }else if(_downloadStatus == DownloadStatusComplete){
-            [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
-        }
-        _Xbutton.tag = 101;
-    }else {
-        [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
+//- (void)setDownloadProgress:(float)progress WithStatus:(DownloadStatus)downloadStatus with:(RootModel *)model{
+//    _Tlabel.text = model.name;
+//    _Dlabel.text = model.abstract;
+//    if ([model.online isEqualToString:@"0"] ){
+//        _downloadStatus = downloadStatus;
+//        if (_downloadStatus == DownloadStatusLoading) {
+//            [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
+//        }else if(_downloadStatus == DownloadStatusPause) {
+//            [_Xbutton setTitle:@"暂停" forState:UIControlStateNormal];
+//        }else if(_downloadStatus == DownloadStatusWaiting) {
+//            [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
+//        }else if(_downloadStatus == DownloadStatusComplete){
+//            [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
+//        }
+//        _Xbutton.tag = 101;
+//    }else {
+//        [_Xbutton setTitle:@"在线" forState:UIControlStateNormal];
+//    }
+//    [_Xbutton addTarget:self action:@selector(xubuttonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    //进度条
+//    self.progressView.progress = progress / 100;
+//}
+
+/////////
+- (void)setDownloadProgress:(float)progress WithStatus:(DownloadStatus)downloadStatus with:(ChapterModel *)model{
+    self.Tlabel.text = model.title;
+    self.Dlabel.text = model.type == 1?@"视频":@"音频";
+    _downloadStatus = downloadStatus;
+    if (_downloadStatus == DownloadStatusLoading) {
+        [_Xbutton setTitle:@"开始" forState:UIControlStateNormal];
+    }else if(_downloadStatus == DownloadStatusPause) {
+        [_Xbutton setTitle:@"暂停" forState:UIControlStateNormal];
+    }else if(_downloadStatus == DownloadStatusWaiting) {
+        [_Xbutton setTitle:@"恢复" forState:UIControlStateNormal];
+    }else if(_downloadStatus == DownloadStatusComplete){
+        [_Xbutton setTitle:@"完成" forState:UIControlStateNormal];
     }
+    _Xbutton.tag = 101;
     [_Xbutton addTarget:self action:@selector(xubuttonAction:) forControlEvents:UIControlEventTouchUpInside];
     //进度条
     self.progressView.progress = progress / 100;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
 }
 
 @end
